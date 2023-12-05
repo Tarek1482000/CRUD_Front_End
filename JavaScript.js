@@ -1,7 +1,5 @@
-let DarkMode = document.getElementById("DarkMode");
-let LightMode = document.getElementById("LightMode");
+let ReverseColorMode = document.getElementById("ReverseColorMode");
 let head = document.querySelector(".head");
-
 let title = document.getElementById("title");
 let price = document.getElementById("price");
 let taxes = document.getElementById("taxes");
@@ -18,6 +16,87 @@ let SearchCategory = document.getElementById("SearchCategory");
 
 let Mode = "Create",
   temp = "";
+
+/* Dark or Light Mode */
+
+let ColorMod = "Dark";
+if (localStorage.colr != "null") {
+  ColorMod = localStorage.colr;
+}
+
+function ChangeColor() {
+  // Check if localStorage.colr is null or undefined
+  if (localStorage.colr != "null") {
+    // Toggle between "Dark" and "Light"
+    localStorage.colr = localStorage.colr === "Dark" ? "Light" : "Dark";
+  } else {
+    localStorage.setItem("colr", "Light");
+  }
+
+  // Update ColorMod with the current value from localStorage
+  ColorMod = localStorage.colr;
+
+  // Display the color mode
+  DisplayColorMode(ColorMod);
+}
+
+DisplayColorMode(ColorMod);
+function DisplayColorMode(ColorMode) {
+  Head_BodyColorMode(ColorMode);
+  InputsColorMode(ColorMode);
+}
+
+function Head_BodyColorMode(Colormode) {
+  let head_color = "",
+    body_color = "",
+    body_backG = "";
+
+  if (Colormode == "Light") {
+    ReverseColorMode.innerHTML = "Dark Mode";
+    body_backG = "white";
+    body_color = "black";
+    head_color = "black";
+  } else if (Colormode == "Dark") {
+    ReverseColorMode.innerHTML = "Light Mode";
+    body_backG = "black";
+    body_color = "rgba(139, 205, 231, 0.968)";
+    head_color = "rgba(139, 205, 231, 0.968)";
+  }
+  document.body.style.backgroundColor = body_backG;
+  document.body.style.color = body_color;
+  head.style.color = head_color;
+}
+
+function InputsColorMode(Colormode) {
+  let background = "",
+    color = "";
+  if (Colormode == "Light") {
+    background = "rgb(170, 200  ,200)";
+    color = "black";
+  } else if (Colormode == "Dark") {
+    background = "rgb(30, 30, 30)";
+    color = "rgb(139, 205, 231, 0.968)";
+  }
+
+  title.style.background = background;
+  price.style.background = background;
+  taxes.style.background = background;
+  ads.style.background = background;
+  discount.style.background = background;
+  count.style.background = background;
+  category.style.background = background;
+  search.style.background = background;
+
+  title.style.color = color;
+  price.style.color = color;
+  taxes.style.color = color;
+  ads.style.color = color;
+  discount.style.color = color;
+  count.style.color = color;
+  category.style.color = color;
+  search.style.color = color;
+}
+
 /* Get Total */
 function GetTotal() {
   if (price.value != "" && price.value >= "0") {
@@ -31,11 +110,22 @@ function GetTotal() {
 }
 
 let DataPro = [];
-if (localStorage.Products != null) {
-  DataPro = JSON.parse(localStorage.Products);
+
+// Check if the localStorage.Products value is not undefined and not "null"
+if (localStorage.Products && localStorage.Products !== "null") {
+  try {
+    // Attempt to parse the JSON string from localStorage.Products
+    DataPro = JSON.parse(localStorage.Products);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    // Handle the error, e.g., set DataPro to an empty array or provide a default value
+    DataPro = [];
+  }
 } else {
+  // If localStorage.Products is undefined or "null", set DataPro to an empty array
   DataPro = [];
 }
+
 
 /* Create Product */
 submit.onclick = function () {
@@ -206,21 +296,4 @@ function SearchData(data) {
     }
   }
   document.getElementById("tbody").innerHTML = table;
-}
-
-function ChangeColor(id) {
-  if (id == "LightMode") {
-    DarkMode.style.display = "block";
-    LightMode.style.display = "none";
-
-    document.body.style.backgroundColor = "white";
-    document.body.style.color = "black";
-    head.style.color = "black";
-  } else if ("DarkMode") {
-    DarkMode.style.display = "none";
-    LightMode.style.display = "block";
-    document.body.style.backgroundColor = "black";
-    document.body.style.color = "rgba(139, 205, 231, 0.968)";
-    head.style.color = "rgba(139, 205, 231, 0.968)";
-  }
 }

@@ -40,7 +40,7 @@ body {
   margin: 10px 0;
 }
 .head button {
-  margin: 0px  -100px;
+  margin: 0px -100px;
   width: 100px;
   margin-right: 100%;
 }
@@ -65,8 +65,12 @@ input:focus {
   /*
     when click on input place
   */
+  color: rgb(160, 191, 218);
   background: rgb(18, 18, 18);
   transform: scale(1.1);
+}
+input::placeholder {
+  color: rgb(136, 122, 122);
 }
 
 .price input {
